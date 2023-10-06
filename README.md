@@ -1,0 +1,1 @@
+check working of framer motion with template.js
