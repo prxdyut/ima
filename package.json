@@ -11,12 +11,25 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@clerk/nextjs": "^4.25.3",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@fontsource/material-icons": "^5.0.7",
+    "@fontsource/roboto": "^5.0.8",
+    "@mui/icons-material": "^5.14.12",
     "@mui/material": "^5.14.12",
+    "@mui/x-date-pickers": "^6.16.1",
+    "@storybook/addon-themes": "^7.4.6",
+    "dayjs": "^1.11.10",
+    "mongoose": "^7.6.1",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-viewer": "^3.2.2",
+    "socket.io": "^4.7.2",
+    "socket.io-client": "^4.7.2",
+    "suneditor": "^2.45.1",
+    "suneditor-react": "^3.6.1"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.4.6",
@@ -27,9 +40,12 @@
     "@storybook/nextjs": "^7.4.6",
     "@storybook/react": "^7.4.6",
     "@storybook/testing-library": "^0.2.2",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "eslint-plugin-storybook": "^0.6.14",
-    "storybook": "^7.4.6"
+    "typescript": "latest"
   }
 }
