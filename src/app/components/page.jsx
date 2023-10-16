@@ -311,7 +311,7 @@ const Tabs_ = () => {
           variant="fullWidth"
         >
           {tabs.map((tab, i) => (
-            <Sectio key={i} label={tab} sx={{ color: "primary.main" }} ></Sectio>
+            <Sectio key={i} label={tab} sx={{ color: "primary.main" }}></Sectio>
           ))}
         </Tabs>
       </Box>
@@ -324,7 +324,7 @@ const Calender_ = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DateCalendar value={value} onChange={(newValue) => setValue(newValue)}/>
+      <DateCalendar value={value} onChange={(newValue) => setValue(newValue)} />
     </LocalizationProvider>
   );
 };
@@ -444,7 +444,7 @@ const Attendance = () => {
           </IconButton>
         </Grid>
       </Grid>
-      <Box sx={{ height: 8 }}/>
+      <Box sx={{ height: 8 }} />
       <Box
         bgcolor={"primary.light"}
         sx={{ p: 1, borderRadius: 1 }}
@@ -619,7 +619,7 @@ const Drawer_ = () => {
           <ListItem disablePadding onClick={() => signOut()}>
             <ListItemButton>
               <ListItemIcon>
-                <Logout sx={{ color: "danger" }}/>
+                <Logout sx={{ color: "danger" }} />
               </ListItemIcon>
               <ListItemText
                 primary={
@@ -646,11 +646,12 @@ const Modal_ = () => {
 };
 
 const Alert_ = () => {
-  const [alerts, setalerts] = React.useState(["This error occurs when the server cannot understand the request. This can be caused by a number of factors, such as a malformed request, a missing parameter, or an invalid request method."]);
+  const [alerts, setalerts] = React.useState([
+    "This error occurs when the server cannot understand the request. This can be caused by a number of factors, such as a malformed request, a missing parameter, or an invalid request method.",
+  ]);
   const smallScreen = useMediaQuery("(max-width:768px)");
 
-  const handleAddAlert = () =>
-    setalerts([...alerts, Math.random()]);
+  const handleAddAlert = () => setalerts([...alerts, Math.random()]);
 
   const handleRemoveAlert = (index) =>
     setalerts((prev) => [...prev.filter((_, i) => i !== index)]);
@@ -670,7 +671,11 @@ const Alert_ = () => {
 
   return (
     <React.Fragment>
-      <Button variant="contained" onClick={handleAddAlert} sx={{width: 'max-content'}}>
+      <Button
+        variant="contained"
+        onClick={handleAddAlert}
+        sx={{ width: "max-content" }}
+      >
         Add Alert
       </Button>
       <List
@@ -680,7 +685,7 @@ const Alert_ = () => {
           position: "fixed",
           bottom: "0",
           right: "0",
-          width: smallScreen ?"100%": "24rem",
+          width: smallScreen ? "100%" : "24rem",
           zIndex: (theme) => theme.zIndex.modal,
         }}
       >
@@ -702,21 +707,51 @@ export default function Home() {
         <Typography variant="h5" gutterBottom fontWeight={600}>
           Components
         </Typography>
-        <Section title="Navigation Bar" ><Navbar /></Section>
-        <Section title="Top Bar"  ><TopBar_ /></Section>
-        <Section title="Bottom Bar" children={} ><BotBar /></Section>
-        <Section title="Drawer" children={} ><Drawer_ /></Section>
-        <Section title="Alerts" children={<Alert_ />} ></Section>
-        <Section title="Button" children={<Buttons />} ></Section>
-        <Section title="CheckBox" children={<Checkboxes />} ></Section>
-        <Section title="List" children={<Lists />} ></Section>
-        <Section title="Tabs" children={<Tabs_ />} ></Section>
-        <Section title="Text Editor" children={<TextEditor />} ></Section>
-        <Section title="Calender" children={<Calender_ />} ></Section>
-        <Section title="Attendance" children={<Attendance />} ></Section>
-        <Section title="Image Viewer" children={<ImageViewer />} ></Section>
-        <Section title="Accordian" children={<Accordian_ />} ></Section>
-        <Section title="Modal" children={<Modal_ />} ></Section>
+        <Section title="Navigation Bar">
+          <Navbar />
+        </Section>
+        <Section title="Top Bar">
+          <TopBar_ />
+        </Section>
+        <Section title="Bottom Bar">
+          <BotBar />
+        </Section>
+        <Section title="Drawer">
+          <Drawer_ />
+        </Section>
+        <Section title="Alerts">
+          <Alert_ />
+        </Section>
+        <Section title="Button">
+          <Buttons />
+        </Section>
+        <Section title="CheckBox">
+          <Checkboxes />
+        </Section>
+        <Section title="List">
+          <Lists />
+        </Section>
+        <Section title="Tabs">
+          <Tabs_ />
+        </Section>
+        <Section title="Text Editor">
+          <TextEditor />
+        </Section>
+        <Section title="Calender">
+          <Calender_ />
+        </Section>
+        <Section title="Attendance">
+          <Attendance />
+        </Section>
+        <Section title="Image Viewer">
+          <ImageViewer />
+        </Section>
+        <Section title="Accordian">
+          <Accordian_ />
+        </Section>
+        <Section title="Modal">
+          <Modal_ />
+        </Section>
       </Stack>
     </Container>
   );
