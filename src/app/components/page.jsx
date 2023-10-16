@@ -311,7 +311,7 @@ const Tabs_ = () => {
           variant="fullWidth"
         >
           {tabs.map((tab, i) => (
-            <Tab key={i} label={tab} sx={{ color: "primary.main" }} />
+            <Sectio key={i} label={tab} sx={{ color: "primary.main" }} ></Sectio>
           ))}
         </Tabs>
       </Box>
@@ -324,7 +324,7 @@ const Calender_ = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DateCalendar value={value} onChange={(newValue) => setValue(newValue)} />
+      <DateCalendar value={value} onChange={(newValue) => setValue(newValue)}/>
     </LocalizationProvider>
   );
 };
@@ -444,7 +444,7 @@ const Attendance = () => {
           </IconButton>
         </Grid>
       </Grid>
-      <Box sx={{ height: 8 }} />
+      <Box sx={{ height: 8 }}/>
       <Box
         bgcolor={"primary.light"}
         sx={{ p: 1, borderRadius: 1 }}
@@ -619,7 +619,7 @@ const Drawer_ = () => {
           <ListItem disablePadding onClick={() => signOut()}>
             <ListItemButton>
               <ListItemIcon>
-                <Logout sx={{ color: "danger" }} />
+                <Logout sx={{ color: "danger" }}/>
               </ListItemIcon>
               <ListItemText
                 primary={
@@ -702,21 +702,21 @@ export default function Home() {
         <Typography variant="h5" gutterBottom fontWeight={600}>
           Components
         </Typography>
-        <Section title="Navigation Bar" children={<Navbar />} />
-        <Section title="Top Bar" children={<TopBar_ />} />
-        <Section title="Bottom Bar" children={<BotBar />} />
-        <Section title="Drawer" children={<Drawer_ />} />
-        <Section title="Alerts" children={<Alert_ />} />
-        <Section title="Button" children={<Buttons />} />
-        <Section title="CheckBox" children={<Checkboxes />} />
-        <Section title="List" children={<Lists />} />
-        <Section title="Tabs" children={<Tabs_ />} />
-        <Section title="Text Editor" children={<TextEditor />} />
-        <Section title="Calender" children={<Calender_ />} />
-        <Section title="Attendance" children={<Attendance />} />
-        <Section title="Image Viewer" children={<ImageViewer />} />
-        <Section title="Accordian" children={<Accordian_ />} />
-        <Section title="Modal" children={<Modal_ />} />
+        <Section title="Navigation Bar" ><Navbar /></Section>
+        <Section title="Top Bar"  ><TopBar_ /></Section>
+        <Section title="Bottom Bar" children={} ><BotBar /></Section>
+        <Section title="Drawer" children={} ><Drawer_ /></Section>
+        <Section title="Alerts" children={<Alert_ />} ></Section>
+        <Section title="Button" children={<Buttons />} ></Section>
+        <Section title="CheckBox" children={<Checkboxes />} ></Section>
+        <Section title="List" children={<Lists />} ></Section>
+        <Section title="Tabs" children={<Tabs_ />} ></Section>
+        <Section title="Text Editor" children={<TextEditor />} ></Section>
+        <Section title="Calender" children={<Calender_ />} ></Section>
+        <Section title="Attendance" children={<Attendance />} ></Section>
+        <Section title="Image Viewer" children={<ImageViewer />} ></Section>
+        <Section title="Accordian" children={<Accordian_ />} ></Section>
+        <Section title="Modal" children={<Modal_ />} ></Section>
       </Stack>
     </Container>
   );
