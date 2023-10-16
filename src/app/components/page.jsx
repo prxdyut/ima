@@ -3,8 +3,10 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Alert,
   AppBar,
   Avatar,
+  Backdrop,
   BottomNavigation,
   BottomNavigationAction,
   Box,
@@ -12,11 +14,14 @@ import {
   Card,
   CardHeader,
   Checkbox,
+  Collapse,
   Container,
   Divider,
+  Fade,
   FormControlLabel,
   FormGroup,
   Grid,
+  Grow,
   IconButton,
   ImageList,
   ImageListItem,
@@ -28,12 +33,15 @@ import {
   ListItemText,
   Menu,
   MenuItem,
+  Modal,
   Paper,
+  Slide,
   Stack,
   Tab,
   Tabs,
   Toolbar,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import {
   ArrowBackIos,
@@ -41,6 +49,7 @@ import {
   ArrowForwardIos,
   Assignment,
   CalendarToday,
+  Close,
   ExpandMore,
   Help,
   HomeMax,
@@ -55,7 +64,8 @@ import {
   Search as SearchIcon,
   Timelapse,
 } from "@mui/icons-material";
-import React, { useState } from "react";
+import { useDebounce } from "@uidotdev/usehooks";
+import React, { useEffect, useState } from "react";
 import Section from "@/components/section";
 import { UserButton } from "@clerk/nextjs";
 import dayjs from "dayjs";
@@ -64,11 +74,21 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import SunEditor from "suneditor-react";
 import dynamic from "next/dynamic";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import {
+  useRouter,
+  usePathname,
+  useParams,
+  useSearchParams,
+} from "next/navigation";
 
 const ReactViewer = dynamic(() => import("react-viewer"), { ssr: false });
 
 import "suneditor/dist/css/suneditor.min.css";
 import Link from "next/link";
+import { TransitionGroup } from "react-transition-group";
 
 const Navbar = () => (
   <Paper
@@ -614,6 +634,67 @@ const Drawer_ = () => {
   );
 };
 
+const Modal_ = () => {
+  const router = useRouter();
+  return (
+    <div>
+      <Button LinkComponent={Link} href="/photos/a">
+        Open modal
+      </Button>
+    </div>
+  );
+};
+
+const Alert_ = () => {
+  const [alerts, setalerts] = React.useState(["This error occurs when the server cannot understand the request. This can be caused by a number of factors, such as a malformed request, a missing parameter, or an invalid request method."]);
+  const smallScreen = useMediaQuery("(max-width:768px)");
+
+  const handleAddAlert = () =>
+    setalerts([...alerts, Math.random()]);
+
+  const handleRemoveAlert = (index) =>
+    setalerts((prev) => [...prev.filter((_, i) => i !== index)]);
+
+  function renderItem({ item, handleRemoveAlert, index }) {
+    return (
+      <Alert
+        variant="filled"
+        sx={{ my: 1 }}
+        severity="info"
+        onClose={() => handleRemoveAlert(index)}
+      >
+        {item}
+      </Alert>
+    );
+  }
+
+  return (
+    <React.Fragment>
+      <Button variant="contained" onClick={handleAddAlert} sx={{width: 'max-content'}}>
+        Add Alert
+      </Button>
+      <List
+        sx={{
+          p: 2,
+          pb: 0,
+          position: "fixed",
+          bottom: "0",
+          right: "0",
+          width: smallScreen ?"100%": "24rem",
+          zIndex: (theme) => theme.zIndex.modal,
+        }}
+      >
+        <TransitionGroup>
+          {alerts.map((item, index) => (
+            <Collapse key={item}>
+              {renderItem({ item, handleRemoveAlert, index })}
+            </Collapse>
+          ))}
+        </TransitionGroup>
+      </List>
+    </React.Fragment>
+  );
+};
 export default function Home() {
   return (
     <Container sx={{ py: 2 }}>
@@ -625,6 +706,7 @@ export default function Home() {
         <Section title="Top Bar" children={<TopBar_ />} />
         <Section title="Bottom Bar" children={<BotBar />} />
         <Section title="Drawer" children={<Drawer_ />} />
+        <Section title="Alerts" children={<Alert_ />} />
         <Section title="Button" children={<Buttons />} />
         <Section title="CheckBox" children={<Checkboxes />} />
         <Section title="List" children={<Lists />} />
@@ -634,6 +716,7 @@ export default function Home() {
         <Section title="Attendance" children={<Attendance />} />
         <Section title="Image Viewer" children={<ImageViewer />} />
         <Section title="Accordian" children={<Accordian_ />} />
+        <Section title="Modal" children={<Modal_ />} />
       </Stack>
     </Container>
   );

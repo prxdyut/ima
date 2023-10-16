@@ -1,1 +1,2 @@
-make apis for data (with authentication)
+make apis for data { Remarks, Attendance, Log}
+manage api access from middleware itself
