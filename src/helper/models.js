@@ -88,8 +88,6 @@ const LogSchema = new Schema({
   created: Date,
 });
 
-export const Users =
-  mongoose.models.users || mongoose.model("users", UserSchema);
 export const Batches =
   mongoose.models.batches || mongoose.model("batches", BatchSchema);
 export const Assignments =

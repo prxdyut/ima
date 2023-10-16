@@ -6,7 +6,6 @@ import {
   Alert,
   AppBar,
   Avatar,
-  Backdrop,
   BottomNavigation,
   BottomNavigationAction,
   Box,
@@ -17,11 +16,9 @@ import {
   Collapse,
   Container,
   Divider,
-  Fade,
   FormControlLabel,
   FormGroup,
   Grid,
-  Grow,
   IconButton,
   ImageList,
   ImageListItem,
@@ -33,23 +30,19 @@ import {
   ListItemText,
   Menu,
   MenuItem,
-  Modal,
   Paper,
-  Slide,
   Stack,
-  Tab,
   Tabs,
+  TextField,
   Toolbar,
   Typography,
   useMediaQuery,
 } from "@mui/material";
 import {
-  ArrowBackIos,
   ArrowBackIosNew,
   ArrowForwardIos,
   Assignment,
   CalendarToday,
-  Close,
   ExpandMore,
   Help,
   HomeMax,
@@ -64,25 +57,20 @@ import {
   Search as SearchIcon,
   Timelapse,
 } from "@mui/icons-material";
-import { useDebounce } from "@uidotdev/usehooks";
 import React, { useEffect, useState } from "react";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Section from "@/components/section";
 import { UserButton } from "@clerk/nextjs";
 import dayjs from "dayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import SunEditor from "suneditor-react";
 import dynamic from "next/dynamic";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import {
-  useRouter,
-  usePathname,
-  useParams,
-  useSearchParams,
-} from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const ReactViewer = dynamic(() => import("react-viewer"), { ssr: false });
 
@@ -311,7 +299,11 @@ const Tabs_ = () => {
           variant="fullWidth"
         >
           {tabs.map((tab, i) => (
-            <Sectio key={i} label={tab} sx={{ color: "primary.main" }}></Sectio>
+            <Section
+              key={i}
+              label={tab}
+              sx={{ color: "primary.main" }}
+            ></Section>
           ))}
         </Tabs>
       </Box>
@@ -687,9 +679,16 @@ const Alert_ = () => {
           right: "0",
           width: smallScreen ? "100%" : "24rem",
           zIndex: (theme) => theme.zIndex.modal,
+          height: "100vh",
+          overflow: "scroll",
+          display: "flex",
+          alignItems: "flex-end",
+          flexDirection: "column",
+          justifyContent: "flex-end",
+          height: "max-content",
         }}
       >
-        <TransitionGroup>
+        <TransitionGroup style={{ width: "100%" }}>
           {alerts.map((item, index) => (
             <Collapse key={item}>
               {renderItem({ item, handleRemoveAlert, index })}
@@ -700,6 +699,89 @@ const Alert_ = () => {
     </React.Fragment>
   );
 };
+
+const DatePicker_ = () => {
+  return (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DemoContainer components={["DatePicker"]}>
+        <DatePicker label="Basic date picker" />
+      </DemoContainer>
+    </LocalizationProvider>
+  );
+};
+
+const FormBuilder = () => {
+  useEffect(() => {
+    const formObj = {
+      method: "POST",
+      url: "http://localhost:3000/api/assignment",
+      data: {
+        topic: "Linear Equations",
+        content:
+          "Solve the following set of linear equations: 2x + 3y = 11, 4x - 5y = 19.",
+        subject: "Physics",
+        files: [
+          "https://www.pexels.com/photo/aerial-view-of-algebra-equation-108077/",
+          "https://www.pexels.com/photo/aerial-view-of-algebra-equation-108078/",
+        ],
+        created: "2022-03-03",
+        expiry: "2022-03-17",
+      },
+    };
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify(formObj.data);
+    var requestOptions = {
+      method: formObj.method,
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(formObj.url, requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+  }, []);
+
+  const formFields = [
+    { type: "short", label: "Subject", name: "subject" },
+    { type: "date", label: "Expiry", name: "expiry" },
+    { type: "short", label: "Topic", name: "topic" },
+    { type: "long", label: "Topic", name: "topic" },
+  ];
+
+  const [data, updateData] = useState({});
+  console.log(data);
+  return (
+    <React.Fragment>
+      {formFields.map(
+        ({ label, type, name }, i) =>
+          (type == "date" && (
+            <LocalizationProvider dateAdapter={AdapterDayjs} key={i}>
+              <DatePicker
+                label={label}
+                onChange={(e) => updateData({ [name]: e.target.value })}
+              />
+            </LocalizationProvider>
+          )) ||
+          (type == "short" && (
+            <TextField
+              key={i}
+              label={label}
+              onChange={(e) => updateData({ [name]: e.target.value })}
+            />
+          )) ||
+          (type == "long" && (
+            <SunEditor onChange={(data) => updateData({ [name]: data })} />
+          ))
+      )}
+    </React.Fragment>
+  );
+};
+
 export default function Home() {
   return (
     <Container sx={{ py: 2 }}>
@@ -719,6 +801,9 @@ export default function Home() {
         <Section title="Drawer">
           <Drawer_ />
         </Section>
+        <Section title="Form Builder">
+          <FormBuilder />
+        </Section>
         <Section title="Alerts">
           <Alert_ />
         </Section>
@@ -737,6 +822,9 @@ export default function Home() {
         <Section title="Text Editor">
           <TextEditor />
         </Section>
+        <Section title="Date Picker">
+          <DatePicker_ />
+        </Section>
         <Section title="Calender">
           <Calender_ />
         </Section>
@@ -752,6 +840,7 @@ export default function Home() {
         <Section title="Modal">
           <Modal_ />
         </Section>
+        <React.Fragment></React.Fragment>
       </Stack>
     </Container>
   );

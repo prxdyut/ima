@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
-const uri =
-  "mongodb+srv://pradyut:97s3ZIC8ujuO3lyM@cluster0.vux1ppq.mongodb.net/?retryWrites=true&w=majority";
+const uri = process.env.MONGODB_CONNECTION_URI + "?retryWrites=true&w=majority";
 
 export const connectDB = async () => {
   try {
