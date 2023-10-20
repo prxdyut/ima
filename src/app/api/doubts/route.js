@@ -5,9 +5,11 @@ import { NextResponse } from "next/server";
 connectDB();
 export async function GET(request) {
   const id = request.nextUrl.searchParams.get("id");
-
+  let data;
   try {
-    const data = await Doubts.findById(id).exec();
+    if (id) data = await Doubts.findById(id).exec();
+    else data = await Doubts.find().select(["_id", "topic", "created", "content"]).exec();
+
     return NextResponse.json(data);
   } catch (error) {
     console.log(error);
@@ -35,13 +37,9 @@ export async function PATCH(request) {
   let reqData = await request.json();
 
   try {
-    const updatedData = await Doubts.findOneAndUpdate(
-      { _id: id },
-      reqData,
-      {
-        upsert: true,
-      }
-    );
+    const updatedData = await Doubts.findOneAndUpdate({ _id: id }, reqData, {
+      upsert: true,
+    });
 
     console.log(updatedData);
     return NextResponse.json(updatedData);

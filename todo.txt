@@ -1,2 +1,5 @@
 make apis for data { Remarks, Attendance, Log}
 manage api access from middleware itself
+
+make image uploader
+authenticate api to show batch based data

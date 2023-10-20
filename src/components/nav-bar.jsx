@@ -45,7 +45,7 @@ const Navbar = () => {
             color: float ? "text.primary" : "primary.contrastText",
             borderRadius: float ? 10 : 0,
             px: 1,
-            py: 1,
+            py: 0.6,
             mt: float ? 1 : 0,
           }}
         >

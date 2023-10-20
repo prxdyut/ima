@@ -5,9 +5,11 @@ import { NextResponse } from "next/server";
 connectDB();
 export async function GET(request) {
   const id = request.nextUrl.searchParams.get("id");
-
+  let data;
   try {
-    const data = await Tests.findById(id).exec();
+    if (id) data = await Tests.findById(id).exec();
+    else data = await Tests.find().select(['created', '_id', 'subject', 'scores', 'title']).exec();
+
     return NextResponse.json(data);
   } catch (error) {
     console.log(error);
