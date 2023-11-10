@@ -1,26 +1,31 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import dayjs from "dayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import dynamic from "next/dynamic";
-import "react-toastify/dist/ReactToastify.css";
-
-const ReactViewer = dynamic(() => import("react-viewer"), { ssr: false });
-
-import "suneditor/dist/css/suneditor.min.css";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-const UICalender = ({  onChange }) => {
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+const UICalender = ({ value, onChange }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [value, setValue] = useState()
+
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DateCalendar value={value} onChange={(newdate) => {setValue(new Date(newdate.$d).toDateString()); onChange(newdate) }} />
-    </LocalizationProvider>
+    <>
+      {console.log(value)}
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DateCalendar
+          value={value}
+          onChange={(newValue) => onChange(newValue)}
+        />
+      </LocalizationProvider>
+    </>
   );
 };
 

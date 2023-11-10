@@ -12,21 +12,56 @@ const fetchUrl = async (url) => {
 };
 
 export async function getAllAssignments() {
-  return await fetchUrl("http://localhost:3000/api/assignment");
+  return await fetchUrl("/api/assignment");
+}
+
+export async function getAssignment(id) {
+  return await fetchUrl("/api/assignment?id=" + id);
+}
+
+export async function getSubmission(id) {
+  return await fetchUrl("/api/submission?id=" + id);
+}
+
+export async function getAllSubmissions(id) {
+  return await fetchUrl("/api/submission?all=true&id=" + id);
 }
 
 export async function getAllDoubts() {
-  return await fetchUrl("http://localhost:3000/api/doubts");
+  return await fetchUrl("/api/doubts");
+}
+
+export async function getDoubt(id) {
+  return await fetchUrl("/api/doubts?id=" + id);
+}
+export async function getResponses(id) {
+  return await fetchUrl("/api/responses?id=" + id);
 }
 
 export async function getAllTests() {
-  return await fetchUrl("http://localhost:3000/api/tests");
+  return await fetchUrl("/api/tests");
 }
 
-export async function getSchedule(date) {
-  return await fetchUrl("http://localhost:3000/api/schedules?date=" + date);
+export async function getTest(id) {
+  return await fetchUrl("/api/tests?id=" + id);
+}
+
+export async function getAllSchedule() {
+  return await fetchUrl("/api/schedules");
 }
 
 export async function getFiles() {
-  return await fetchUrl("http://localhost:3000/api/files");
+  return await fetchUrl("/api/files");
+}
+
+export async function getAllUsers() {
+  return await fetchUrl("/api/users");
+}
+
+export async function getUsersByBatch(batch) {
+  return await fetchUrl("/api/users?batch=" + batch);
+}
+
+export async function getUser(id) {
+  return await fetchUrl("/api/users?id=" + id);
 }

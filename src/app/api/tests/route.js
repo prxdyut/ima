@@ -1,19 +1,32 @@
 import { connectDB } from "@/helper/db";
 import { Tests } from "@/helper/models";
+import { auth, clerkClient } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 connectDB();
 export async function GET(request) {
   const id = request.nextUrl.searchParams.get("id");
+
+  const { userId } = auth();
+  const user = await clerkClient.users.getUser(userId);
+
   let data;
   try {
-    if (id) data = await Tests.findById(id).exec();
-    else data = await Tests.find().select(['created', '_id', 'subject', 'scores', 'title']).exec();
+    if (id)
+      data = await Tests.findOne({
+        _id: id,
+      }).exec();
+    else if (user.publicMetadata.type == "teacher" || user.publicMetadata.type == "admin")
+      data = await Tests.find().exec();
+    else if (user.publicMetadata.type == "student")
+      data = await Tests.find({
+        batch: user.publicMetadata.batch,
+      }).exec();
 
     return NextResponse.json(data);
   } catch (error) {
     console.log(error);
-    NextResponse.json(error);
+    return NextResponse.json(error);
   }
 }
 
@@ -37,13 +50,9 @@ export async function PATCH(request) {
   let reqData = await request.json();
 
   try {
-    const updatedData = await Tests.findOneAndUpdate(
-      { _id: id },
-      reqData,
-      {
-        upsert: true,
-      }
-    );
+    const updatedData = await Tests.findOneAndUpdate({ _id: id }, reqData, {
+      upsert: true,
+    });
 
     console.log(updatedData);
     return NextResponse.json(updatedData);

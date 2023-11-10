@@ -1,5 +1,6 @@
 import { connectDB } from "@/helper/db";
 import { Doubts } from "@/helper/models";
+import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 connectDB();
@@ -26,13 +27,13 @@ export async function GET(request) {
 
 export async function POST(request) {
   let reqData = await request.json();
-
+const {userId} = auth()
   const id = request.nextUrl.searchParams.get("doubt");
 
   try {
     const newData = await Doubts.updateOne(
       { _id: id },
-      { $push: { responses: reqData } }
+      { $push: { responses: {...reqData, created: new Date(), user: userId} } }
     );
 
     console.log(newData);

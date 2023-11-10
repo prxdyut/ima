@@ -1,14 +1,28 @@
 import { connectDB } from "@/helper/db";
 import { Files } from "@/helper/models";
+import { auth, clerkClient } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 connectDB();
 export async function GET(request) {
   const id = request.nextUrl.searchParams.get("id");
+
+  const { userId } = auth();
+  const user = await clerkClient.users.getUser(userId);
+
   let data;
   try {
-    if (id) data = await Files.findById(id).exec();
-    else data = await Files.find().exec();
+    if (id)
+      data = await Files.findOne({
+        _id: id,
+        batch: user.publicMetadata.batch,
+      }).exec();
+    else if (user.publicMetadata.type == "teacher" || user.publicMetadata.type == "admin")
+      data = await Files.find().exec();
+    else if (user.publicMetadata.type == "student")
+      data = await Files.find({
+        batch: user.publicMetadata.batch,
+      }).exec();
 
     return NextResponse.json(data);
   } catch (error) {

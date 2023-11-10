@@ -1,19 +1,32 @@
 import { connectDB } from "@/helper/db";
 import { Assignments } from "@/helper/models";
+import { auth, clerkClient } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 connectDB();
 export async function GET(request) {
-  const id = request.nextUrl.searchParams.get("id");
+  const id = request.nextUrl.searchParams.get("id") || false;
+  const all = request.nextUrl.searchParams.get("all") || false;
+  const { userId } = auth();
 
   try {
-    const data = await Assignments.findOne({ "submissions._id": id });
-    let dataObject;
-    if (data) {
-      const object = data.submissions.find((obj) => obj.id === id);
-      dataObject = object;
-    } else {
-      throw "No object found with the provided id";
+    let dataObject = false;
+    if (id && all) {
+      const data = await Assignments.findOne({
+        _id: id,
+      });
+      if (data) dataObject = data.submissions;
+      else dataObject = [];
+    }
+
+    if (id && !all) {
+      const data = await Assignments.findOne({
+        _id: id,
+        "submissions.student": userId,
+      });
+      if (data) {
+        dataObject = data.submissions.find((obj) => obj.student == userId);
+      }
     }
 
     console.log(dataObject);
@@ -26,17 +39,21 @@ export async function GET(request) {
 
 export async function POST(request) {
   let reqData = await request.json();
-
   const id = request.nextUrl.searchParams.get("assignment");
+  const { userId } = auth();
 
   try {
     const newData = await Assignments.updateOne(
       { _id: id },
-      { $push: { submissions: reqData } }
+      {
+        $push: {
+          submissions: { student: userId, created: new Date(), ...reqData },
+        },
+      }
     );
 
     console.log(newData);
-    return NextResponse.json(newData);
+    return NextResponse.json(reqData);
   } catch (error) {
     console.log(error);
     return NextResponse.json(error);

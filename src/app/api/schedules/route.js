@@ -1,13 +1,22 @@
 import { connectDB } from "@/helper/db";
 import { Schedules } from "@/helper/models";
+import { auth, clerkClient } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 connectDB();
 export async function GET(request) {
-  const date = request.nextUrl.searchParams.get("date");
+  const { userId } = auth();
+  const user = await clerkClient.users.getUser(userId);
 
+  let data;
   try {
-    const data = await Schedules.findOne({ date });
+    if (user.publicMetadata.type == "teacher" || user.publicMetadata.type == "admin")
+      data = await Schedules.find().exec();
+    else if (user.publicMetadata.type == "student")
+      data = await Schedules.find({
+        batch: user.publicMetadata.batch,
+      }).exec();
+
     return NextResponse.json(data);
   } catch (error) {
     console.log(error);
@@ -16,9 +25,7 @@ export async function GET(request) {
 }
 
 export async function PUT(request) {
-  let reqData = await request.json();
-
-  const date = request.nextUrl.searchParams.get("date");
+  let { date, ...reqData } = await request.json();
 
   try {
     const newData = await Schedules.findOneAndUpdate(
@@ -27,8 +34,8 @@ export async function PUT(request) {
       { upsert: true }
     );
 
-    console.log(newData);
-    return NextResponse.json(newData);
+    console.log({ date, ...reqData });
+    return NextResponse.json({ date, ...reqData });
   } catch (error) {
     console.log(error);
     return NextResponse.json(error);

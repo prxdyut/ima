@@ -1,17 +1,31 @@
 import { connectDB } from "@/helper/db";
 import { Assignments } from "@/helper/models";
+import { clerkClient, getAuth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { headers } from "next/headers";
+import { auth } from "@clerk/nextjs";
 
 connectDB();
 export async function GET(request) {
   const id = request.nextUrl.searchParams.get("id");
+  const { userId } = auth();
+  const user = await clerkClient.users.getUser(userId);
+
   let data;
   try {
-    if (id) data = await Assignments.findById(id).exec();
-    else
-      data = await Assignments.find()
-        .select(["_id", "subject", "topic", "expiry", "submissions._id"])
-        .exec();
+    if (id)
+      data = await Assignments.findOne({
+        _id: id,
+      }).exec();
+    else if (
+      user.publicMetadata.type == "teacher" ||
+      user.publicMetadata.type == "admin"
+    )
+      data = await Assignments.find().exec();
+    else if (user.publicMetadata.type == "student")
+      data = await Assignments.find({
+        batch: user.publicMetadata.batch,
+      }).exec();
 
     return NextResponse.json(data);
   } catch (error) {
@@ -22,9 +36,10 @@ export async function GET(request) {
 
 export async function POST(request) {
   let reqData = await request.json();
+  const { userId } = auth();
 
   try {
-    const data = new Assignments(reqData);
+    const data = new Assignments({...reqData, teacher: userId, created: new Date()});
     const createdData = await data.save();
 
     console.log(createdData);

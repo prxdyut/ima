@@ -4,6 +4,7 @@ const { ObjectId } = Schema.Types;
 const BatchSchema = new Schema({
   grade: String,
   section: String,
+  students: [String],
   meta_data: Object,
 });
 
@@ -39,6 +40,7 @@ const DoubtSchema = new Schema({
       content: String,
       files: Array,
       created: Date,
+      replyTo: String,
       user: String,
     },
   ],
@@ -52,11 +54,11 @@ const TestSchema = new Schema({
   answers: Array,
   total: Number,
   batch: { type: ObjectId, ref: "batches" },
-  scores: [{ user: String, obtained: Number }],
+  scores: [{ user: String, obtained: String }],
 });
 
 const ScheduleSchema = new Schema({
-  lectures: [{ title: String, in: String, out: String }],
+  lectures: [{ title: String, subject: String, in: String, out: String }],
   date: Date,
   teacher: String,
   batch: { type: ObjectId, ref: "batches" },
@@ -78,8 +80,13 @@ const RemarkSchema = new Schema({
 });
 
 const AttendanceSchema = new Schema({
-  user: String,
-  punches: [Date],
+  batch: String,
+  logs: [
+    {
+      date: String,
+      students: [String],
+    },
+  ],
 });
 
 const LogSchema = new Schema({

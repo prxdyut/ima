@@ -57,7 +57,7 @@ import {
   Search as SearchIcon,
   Timelapse,
 } from "@mui/icons-material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -70,7 +70,7 @@ import SunEditor from "suneditor-react";
 import dynamic from "next/dynamic";
 import "react-toastify/dist/ReactToastify.css";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const ReactViewer = dynamic(() => import("react-viewer"), { ssr: false });
 
@@ -345,6 +345,13 @@ const TopBar_ = () => (
 
 const ImageViewer = () => {
   const [visible, setVisible] = useState(false);
+  const searchParam = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+  console.log(
+    "Image: " + searchParam.has("image-preview"),
+    "Index: " + searchParam.get("image-preview")
+  );
   const itemData = [
     {
       src: "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format",
@@ -371,7 +378,12 @@ const ImageViewer = () => {
     <>
       <ImageList sx={{ width: 400 }} cols={3} rowHeight={164}>
         {itemData.map((item, idx) => (
-          <ImageListItem key={item.img} onClick={() => setVisible(idx)}>
+          <ImageListItem
+            key={item.img}
+            onClick={() =>
+              router.push(pathname + "?image-preview=" + idx, { scroll: false })
+            }
+          >
             <img
               srcSet={`${item.src}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
               src={`${item.src}?w=164&h=164&fit=crop&auto=format`}
@@ -382,10 +394,10 @@ const ImageViewer = () => {
         ))}
       </ImageList>
       <ReactViewer
-        visible={Boolean(visible)}
-        onClose={() => setVisible(false)}
+        visible={searchParam.has("image-preview")}
+        onClose={() => router.back()}
         images={itemData}
-        activeIndex={visible}
+        activeIndex={searchParam.get("image-preview")}
       />
     </>
   );
@@ -742,7 +754,7 @@ const FormBuilder = () => {
 
     fetch(formObj.url, requestOptions)
       .then((response) => response.text())
-      .then((result) => console.log(result))
+      // .then((result) => console.log(result))
       .catch((error) => console.log("error", error));
   }, []);
 
@@ -754,7 +766,7 @@ const FormBuilder = () => {
   ];
 
   const [data, updateData] = useState({});
-  console.log(data);
+  // console.log(data);
   return (
     <React.Fragment>
       {formFields.map(
@@ -782,9 +794,38 @@ const FormBuilder = () => {
   );
 };
 
+import {
+  AcademicsIcon,
+  AssignmentIcon,
+  DoubtIcon,
+  LibraryIcon,
+  ScheduleIcon,
+  TestIcon,
+} from "@/helper/icons";
+import { getSubjectIcon } from "@/helper/functions";
+
+import { ModalContext } from "@/helper/modal-context";
+
 export default function Home() {
+  const pathname = usePathname();
+  const createModal = useContext(ModalContext);
+
   return (
     <Container sx={{ py: 2 }}>
+      <button onClick={() => createModal("pradyut")}>Pradyut</button>
+      <Stack spacing={2}>
+        <AssignmentIcon />
+        <TestIcon />
+        <DoubtIcon />
+        <ScheduleIcon />
+        <LibraryIcon />
+        <AcademicsIcon />
+        <Divider />
+        {getSubjectIcon("ma")}
+        {getSubjectIcon("ph")}
+        {getSubjectIcon("ch")}
+        {/* {console.log(checkPathMatch(pathname, "components"))} */}
+      </Stack>
       <Stack spacing={2}>
         <Typography variant="h5" gutterBottom fontWeight={600}>
           Components

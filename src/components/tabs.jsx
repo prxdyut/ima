@@ -2,7 +2,8 @@
 
 import { Box, Tab, Tabs } from "@mui/material";
 import Link from "next/link";
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const UITabs = ({ tabs = [{ label: "", link: "" }] }) => {
   const [value, setValue] = useState(0);
@@ -11,12 +12,26 @@ const UITabs = ({ tabs = [{ label: "", link: "" }] }) => {
     setValue(newValue);
   };
 
+  const path = usePathname();
+  const router = useRouter();
+  useEffect(() => {
+    tabs
+      .map(({ link }) => link)
+      .map(
+        (item, index) => {
+          item.split("/")[1] == path.split("/")[1] &&
+          (() => {
+            setValue(index);
+          })();
+        }
+      );
+  }, [path]);
+
   return (
     <Box>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
-          onChange={handleChange}
           TabIndicatorProps={{
             style: {
               height: 2.5,
@@ -33,7 +48,7 @@ const UITabs = ({ tabs = [{ label: "", link: "" }] }) => {
               sx={{ color: "primary.main" }}
               LinkComponent={Link}
               href={tab.link}
-            ></Tab>
+            />
           ))}
         </Tabs>
       </Box>

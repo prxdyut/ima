@@ -1,14 +1,27 @@
 import { connectDB } from "@/helper/db";
 import { Doubts } from "@/helper/models";
+import { auth, clerkClient } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 connectDB();
 export async function GET(request) {
   const id = request.nextUrl.searchParams.get("id");
+
+  const { userId } = auth();
+  const user = await clerkClient.users.getUser(userId);
+
   let data;
   try {
-    if (id) data = await Doubts.findById(id).exec();
-    else data = await Doubts.find().select(["_id", "topic", "created", "content"]).exec();
+    if (id)
+      data = await Doubts.findOne({
+        _id: id,
+      }).exec();
+    else if (user.publicMetadata.type == "teacher" || user.publicMetadata.type == "admin")
+      data = await Doubts.find().exec();
+    else if (user.publicMetadata.type == "student")
+      data = await Doubts.find({
+        batch: user.publicMetadata.batch,
+      }).exec();
 
     return NextResponse.json(data);
   } catch (error) {
@@ -19,9 +32,10 @@ export async function GET(request) {
 
 export async function POST(request) {
   let reqData = await request.json();
+  const { userId } = auth();
 
   try {
-    const data = new Doubts(reqData);
+    const data = new Doubts({...reqData, user: userId, created: new Date()});
     const createdData = await data.save();
 
     console.log(createdData);

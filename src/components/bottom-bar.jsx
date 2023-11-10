@@ -1,14 +1,32 @@
 "use client";
 import { BottomNavigation, BottomNavigationAction, Box } from "@mui/material";
 import Link from "next/link";
-import React, { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
-const bottomBar = ({ tabs = [{ label: "", icon: <></>, link: "" }], ...props }) => {
+const BottomBar = ({
+  tabs = [{ label: "", icon: <></>, link: "" }],
+  ...props
+}) => {
   const [value, setValue] = useState(props.default);
+  const path = usePathname();
+  const router = useRouter()
+  useEffect(() => {
+    tabs
+      .map(({ link }) => link)
+      .map(
+        (item, index) =>
+          item.split("/")[1] == path.split("/")[1] &&
+          (() => {
+            setValue(index);
+          })()
+      );
+  }, [path]);
+  console.log(value, path);
 
   return (
     <React.Fragment>
-      <Box sx={{height: 84}} />
+      <Box sx={{ height: 84 }} />
       <BottomNavigation
         sx={{
           bgcolor: "primary.light",
@@ -22,8 +40,8 @@ const bottomBar = ({ tabs = [{ label: "", icon: <></>, link: "" }], ...props }) 
       >
         {tabs.map(({ label, icon, link }, idx) => (
           <BottomNavigationAction
-          LinkComponent={Link}
-          href={link}
+            LinkComponent={Link}
+            href={link}
             label={label}
             value={idx}
             key={idx}
@@ -41,7 +59,7 @@ const bottomBar = ({ tabs = [{ label: "", icon: <></>, link: "" }], ...props }) 
                 {icon}
               </Box>
             }
-            onClick={() => setValue(idx)}
+            onClick={() => router.push(link)}
             sx={{
               color: "primary.main",
               fontWeight: 500,
@@ -58,4 +76,4 @@ const bottomBar = ({ tabs = [{ label: "", icon: <></>, link: "" }], ...props }) 
   );
 };
 
-export default bottomBar;
+export default BottomBar;

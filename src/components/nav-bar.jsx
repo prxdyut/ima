@@ -1,11 +1,19 @@
 "use client";
-import { Box, IconButton, InputBase, Paper } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  InputBase,
+  Paper,
+  SwipeableDrawer,
+} from "@mui/material";
 import { Menu as MenuIcon, Search as SearchIcon } from "@mui/icons-material";
 import { UserButton } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
+import Drawer from "./drawer";
 
 const Navbar = () => {
   const [float, setFloat] = useState(true);
+  const [drawer, toggleDrawer] = useState(false);
 
   // const logit = () => {
   //   window.scrollY > 56 ? setFloat(true) : setFloat(false);
@@ -27,7 +35,7 @@ const Navbar = () => {
           top: 0,
           px: float ? 1 : 0,
           width: "100vw",
-          backdropFilter: 'blur(2px)',
+          backdropFilter: "blur(2px)",
           zIndex: (theme) => theme.zIndex.appBar,
           "&, & *": {
             transition: "all 250ms, color 100ms",
@@ -49,7 +57,7 @@ const Navbar = () => {
             mt: float ? 1 : 0,
           }}
         >
-          <IconButton>
+          <IconButton onClick={() => toggleDrawer(true)}>
             <MenuIcon />
           </IconButton>
           <InputBase
@@ -70,6 +78,16 @@ const Navbar = () => {
           <UserButton afterSignOutUrl="/" />
         </Paper>
       </Box>
+      <div>
+        <SwipeableDrawer
+          anchor="left"
+          open={drawer}
+          onClose={() => toggleDrawer(false)}
+          onOpen={() => toggleDrawer(true)}
+        >
+          <Drawer />
+        </SwipeableDrawer>
+      </div>
     </>
   );
 };

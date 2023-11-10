@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(request) {
   const id = request.nextUrl.searchParams.get("id") || false;
+  const batch = request.nextUrl.searchParams.get("batch") || false;
 
   if (id) {
     try {
@@ -10,6 +11,18 @@ export async function GET(request) {
 
       console.log(user);
       return NextResponse.json(user);
+    } catch (error) {
+      console.log(error);
+      return NextResponse.json(error);
+    }
+  } else if (batch) {
+    try {
+      const users_ = await clerkClient.users.getUserList();
+      const users = users_.filter(
+        ({ publicMetadata }) => publicMetadata.batch == batch
+      );
+      console.log(users);
+      return NextResponse.json(users);
     } catch (error) {
       console.log(error);
       return NextResponse.json(error);
@@ -102,14 +115,14 @@ export async function PATCH(request) {
 }
 
 export async function DELETE(request) {
-    const id = request.nextUrl.searchParams.get("id") || false;
-    try {
-      const user = await clerkClient.users.deleteUser(id);
+  const id = request.nextUrl.searchParams.get("id") || false;
+  try {
+    const user = await clerkClient.users.deleteUser(id);
 
-      console.log(user);
-      return NextResponse.json(user);
-    } catch (error) {
-      console.log(error);
-      return NextResponse.json(error);
-    }
+    console.log(user);
+    return NextResponse.json(user);
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(error);
+  }
 }

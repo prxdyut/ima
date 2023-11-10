@@ -3,3 +3,5 @@ manage api access from middleware itself
 
 make image uploader
 authenticate api to show batch based data
+embed data with user data
+add batch to form builder for every component

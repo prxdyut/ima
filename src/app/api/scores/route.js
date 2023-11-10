@@ -32,10 +32,10 @@ export async function POST(request) {
   try {
     const newData = await Tests.updateOne(
       { _id: id },
-      { $push: { scores: reqData } }
+      { $set: { scores: reqData } }
     );
 
-    console.log(newData);
+    console.log(reqData);
     return NextResponse.json(newData);
   } catch (error) {
     console.log(error);
