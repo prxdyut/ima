@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { MathsIcon, PhysicsIcon, ChemistryIcon } from "./icons";
 import { ModalContext } from "./modal-context";
+import moment from "moment";
 
 export function getSubjectIcon(sub, params = { height: 24, width: 24 }) {
   return (
@@ -55,8 +56,8 @@ export function getFormattedDateShort(date) {
 }
 
 export function getFormattedTime(date) {
-  const Time = new Date(date).toLocaleTimeString().split(/:| /);
-  return `${Time[0]}:${Time[1]} ${Time[3]}`;
+  const Date_ = new Date(date).toString();
+  return moment(Date_).format("HH:mm A");
 }
 
 export const subjects = [

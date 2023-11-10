@@ -35,7 +35,7 @@ export default function NewButton(params) {
       type={"PUT"}
       onSubmit={(result) => {
         router.refresh();
-
+params.reload()
         createModal(
           <Stack spacing={3} sx={{ mt: 2, p: 2 }}>
             <Stack>

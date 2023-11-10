@@ -15,7 +15,7 @@ import Link from "next/link";
 import { useContext } from "react";
 import { ModalContext } from "@/helper/modal-context";
 
-const UIList = ({ contents = [{}], style = {}, target = '' }) => {
+const UIList = ({ contents = [{}], style = {}, target = '', sameLineHelper = false }) => {
   const createModal = useContext(ModalContext);
 
   return (
@@ -41,27 +41,26 @@ const UIList = ({ contents = [{}], style = {}, target = '' }) => {
             key={index}
             disablePadding
             secondaryAction={
-              <Stack direction={"column"} textAlign={'end'}>
-                <Typography variant="caption" color={"text.secondary"}>
+              <Stack direction={ "column"} textAlign={'end'}>
+                <Typography variant="caption" sx={{
+                  display: 'flex',
+                  alignItems: 'center'
+                }} color={"text.secondary"}>
                   {_?.helper || ""}
                 </Typography>
-                <Grid container>
+                <Stack direction={ "row"} textAlign={'end'} justifyContent={'flex-end'}>
                   {(_?.more || []).map((option, index) => (
-                    <Grid item xs key={index}>
-                      <IconButton
-                        size="small"
-                        onClick={() => createModal(option?.modal)}
-                      >
-                        {option?.icon}
-                      </IconButton>
-                    </Grid>
+                    <IconButton key={index}
+                      size="small"
+                      onClick={() => createModal(option?.modal)}
+                    >
+                      {option?.icon}
+                    </IconButton>
                   ))}
-                </Grid>
-              </Stack>
+                </Stack></Stack>
             }
           >
             <ListItemButton
-              // more={Boolean(_?.more)}
               LinkComponent={Link}
               href={_?.link}
               target={target}

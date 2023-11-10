@@ -10,7 +10,10 @@ export async function GET(request) {
 
   let data;
   try {
-    if (user.publicMetadata.type == "teacher" || user.publicMetadata.type == "admin")
+    if (
+      user.publicMetadata.type == "teacher" ||
+      user.publicMetadata.type == "admin"
+    )
       data = await Schedules.find().exec();
     else if (user.publicMetadata.type == "student")
       data = await Schedules.find({
@@ -25,17 +28,16 @@ export async function GET(request) {
 }
 
 export async function PUT(request) {
-  let { date, ...reqData } = await request.json();
+  let { date, batch, ...reqData } = await request.json();
 
   try {
-    const newData = await Schedules.findOneAndUpdate(
-      { date },
+    await Schedules.findOneAndUpdate(
+      { date, batch },
       { $push: { lectures: reqData } },
       { upsert: true }
     );
 
-    console.log({ date, ...reqData });
-    return NextResponse.json({ date, ...reqData });
+    return NextResponse.json({ date, batch, ...reqData });
   } catch (error) {
     console.log(error);
     return NextResponse.json(error);

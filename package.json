@@ -33,6 +33,7 @@
     "framer-motion": "^10.16.4",
     "fs": "^0.0.1-security",
     "lightbox.js-react": "^0.9.5",
+    "moment": "^2.29.4",
     "mongoose": "^7.6.1",
     "next": "latest",
     "next-pwa": "^5.6.0",

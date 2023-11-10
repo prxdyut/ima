@@ -107,7 +107,7 @@ const FormBuilder = ({
               <LocalizationProvider dateAdapter={AdapterDayjs} key={i}>
                 <DatePicker
                   label={label}
-                  value={dayjs(data[name] || new Date().toISOString())}
+                  value={dayjs(data[name] || '')}
                   onChange={(e) => updateData({ ...data, [name]: new Date(e) })}
                 />
               </LocalizationProvider>
@@ -116,7 +116,7 @@ const FormBuilder = ({
               <LocalizationProvider dateAdapter={AdapterDayjs} key={i}>
                 <TimePicker
                   label={label}
-                  value={dayjs(data[name] || new Date().toISOString())}
+                  value={dayjs(data[name] || '')}
                   onChange={(e) => updateData({ ...data, [name]: new Date(e) })}
                 />
               </LocalizationProvider>
