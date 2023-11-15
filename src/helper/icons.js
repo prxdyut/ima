@@ -14,10 +14,14 @@ import {
   Send,
   Refresh,
   Upload,
+  Group,
+  Groups,
+  Payment,
+  Settings,
 } from "@mui/icons-material";
 
 import { TbAtom, TbMathSymbols, TbVaccineBottle } from "react-icons/tb";
-import { SlChemistry } from "react-icons/sl";
+
 
 export function AssignmentIcon(params) {
   return <AssignmentOutlined {...params} />;
@@ -42,6 +46,20 @@ export function LibraryIcon(params) {
 export function AcademicsIcon(params) {
   return <LocalLibraryOutlined {...params} />;
 }
+
+export function AttendanceIcon(params) {
+  return <Groups {...params} />;
+}
+
+export function FeesIcon(params) {
+  return <Payment {...params} />;
+}
+
+export function SettingsIcon(params) {
+  return <Settings {...params} />;
+}
+
+
 
 export function LogoutIcon(params) {
   return <Logout {...params} />;

@@ -9,7 +9,6 @@ export async function GET(request) {
     try {
       const user = await clerkClient.users.getUser(id);
 
-      console.log(user);
       return NextResponse.json(user);
     } catch (error) {
       console.log(error);

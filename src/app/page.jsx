@@ -8,21 +8,6 @@ import Link from "next/link";
 import React, { useEffect } from "react";
 
 export default function Page(params) {
-  const initializeRazorpay = () => {
-    return new Promise((resolve) => {
-      const elem = document.createElement("h1");
-      elem.innerHTML = "New Alert";
-
-      elem.onload = () => {
-        resolve(true);
-      };
-      elem.onerror = () => {
-        resolve(false);
-      };
-
-      document.body.appendChild(elem);
-    });
-  };
 
   return (
     <React.Fragment>

@@ -1,7 +1,5 @@
-make apis for data { Remarks, Attendance, Log}
-manage api access from middleware itself
+**build Notification system
+*compress image in uploaded
 
-make image uploader
+manage api access from middleware itself
 authenticate api to show batch based data
-embed data with user data
-add batch to form builder for every component

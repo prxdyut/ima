@@ -5,7 +5,10 @@ export const metadata = {
   title: "Institution Management App",
 };
 
+
 export default function RootLayout(props) {
+
+
   return (
     <ClerkProvider>
       <html lang="en">
@@ -105,6 +108,9 @@ export default function RootLayout(props) {
             property="og:image"
             content="https://ima-testing.vercel.app/apple-touch-icons/apple-touch-icon.png"
           />
+
+          <script></script>
+
         </head>
         <body>
           {props.children}

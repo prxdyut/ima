@@ -1,85 +1,32 @@
 "use client";
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Alert,
-  AppBar,
-  Avatar,
-  BottomNavigation,
-  BottomNavigationAction,
-  Box,
-  Button,
-  Card,
-  CardHeader,
-  Checkbox,
-  Collapse,
-  Container,
-  Divider,
-  FormControlLabel,
-  FormGroup,
-  Grid,
-  IconButton,
-  ImageList,
-  ImageListItem,
-  InputBase,
-  List,
+  Avatar, Box, Card,
+  CardHeader, Divider, IconButton, List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Menu,
-  MenuItem,
-  Paper,
-  Stack,
-  Tabs,
-  TextField,
-  Toolbar,
-  Typography,
-  useMediaQuery,
+  MenuItem, Typography
 } from "@mui/material";
 import {
-  ArrowBackIosNew,
-  ArrowForwardIos,
   Assignment,
-  CalendarToday,
-  ExpandMore,
-  Help,
-  HomeMax,
-  Inbox,
-  InstallDesktop,
-  InstallMobile,
-  LibraryAdd,
-  LibraryMusic,
-  Logout,
-  Menu as MenuIcon,
-  MoreVert,
-  ReceiptLong,
-  Schedule,
-  Search as SearchIcon,
-  Timelapse,
+  CalendarToday, Help, InstallMobile, LibraryMusic,
+  Logout, MoreVert,
+  ReceiptLong
 } from "@mui/icons-material";
-import React, { useEffect, useState } from "react";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import Section from "@/components/section";
-import { SignOutButton, UserButton } from "@clerk/nextjs";
-import dayjs from "dayjs";
-import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import SunEditor from "suneditor-react";
+import React from "react";
+import { SignOutButton, UserButton, useUser } from "@clerk/nextjs";
 import dynamic from "next/dynamic";
 import "react-toastify/dist/ReactToastify.css";
 
-import { useRouter } from "next/navigation";
-
+import {getFormattedName} from './../helper/functions'
 const ReactViewer = dynamic(() => import("react-viewer"), { ssr: false });
 
 import "suneditor/dist/css/suneditor.min.css";
 import Link from "next/link";
-import { TransitionGroup } from "react-transition-group";
 import { usePWAInstall } from "react-use-pwa-install";
+import { AttendanceIcon, FeesIcon, SettingsIcon } from "../helper/icons";
 
 const Drawer = () => {
   const menuItems = [
@@ -96,6 +43,9 @@ const Drawer = () => {
     { label: "Schedule", url: "/schedule", icon: <CalendarToday /> },
     { label: "Library", url: "/library", icon: <LibraryMusic /> },
     "divider",
+    { label: "Attendance", url: "/attendance", icon: <AttendanceIcon /> },
+    { label: "Fees", url: "/fees", icon: <FeesIcon /> },
+    { label: "Settings", url: "/settings", icon: <SettingsIcon /> },
   ];
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -107,7 +57,7 @@ const Drawer = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+const {user, isLoaded} = useUser()
   const install = usePWAInstall();
 
   return (
@@ -160,8 +110,8 @@ const Drawer = () => {
                   />
                 </IconButton>
               }
-              title={<Typography fontWeight={600}>Pradyut Das</Typography>}
-              subheader={<Typography variant="caption">Student</Typography>}
+              title={<Typography fontWeight={600}>{isLoaded && getFormattedName(user)}</Typography>}
+              subheader={<Typography variant="caption">{isLoaded && user.publicMetadata.type}</Typography>}
             />
           </Card>
         </Box>
@@ -173,7 +123,7 @@ const Drawer = () => {
                   disablePadding
                   secondaryAction={<Typography>{menu?.helper}</Typography>}
                 >
-                  <ListItemButton LinkComponent={Link} href={"./" + menu.url}>
+                  <ListItemButton LinkComponent={Link} href={ menu.url}>
                     <ListItemIcon>{menu.icon}</ListItemIcon>
                     <ListItemText primary={menu.label} />
                   </ListItemButton>

@@ -58,10 +58,29 @@ export async function getAllUsers() {
   return await fetchUrl("/api/users");
 }
 
+export async function getFees() {
+  return await fetchUrl("/api/fees");
+}
+
+export async function getChats() {
+  return await fetchUrl("/api/chats");
+}
+export async function getChat(id) {
+  return await fetchUrl("/api/chats?id=" + id);
+}
+
 export async function getUsersByBatch(batch) {
   return await fetchUrl("/api/users?batch=" + batch);
 }
 
 export async function getUser(id) {
   return await fetchUrl("/api/users?id=" + id);
+}
+
+export async function getAttendanceByDateAndBatch(date, batch) {
+  return await fetchUrl("/api/attendance?date=" + date + "&batch=" + batch);
+}
+
+export async function getAttendanceByBatch(batch) {
+  return await fetchUrl("/api/attendance?batch=" + batch);
 }

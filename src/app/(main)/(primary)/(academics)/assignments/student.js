@@ -33,6 +33,7 @@ export default function Student({}) {
 
   return (
     <React.Fragment>
+      <div id="webpushr-subscription-button"></div>
       <UIList
         contents={contents}
         style={{

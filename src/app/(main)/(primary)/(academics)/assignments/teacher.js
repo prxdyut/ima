@@ -89,6 +89,7 @@ export default  function Teacher({}) {
 
   return (
     <React.Fragment>
+      <div id="webpushr-subscription-button"></div>
       <NewButton/>
       <UIList
         contents={contents}

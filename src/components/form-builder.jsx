@@ -35,16 +35,18 @@ const FormBuilder = ({
   formFields,
   onSubmit = () => {},
   uri,
+  defaultData_ = {},
   type = "POST",
   exitAfterSubmit,
   submitLabel = "Submit",
   submitNode = <Typography sx={{ p: 4 }}>Updated Successfully</Typography>,
+  
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const createModal = useContext(ModalContext);
 
-  let defaultData = {};
+  let defaultData = {...defaultData_};
   formFields.map((a) => (defaultData[a.name] = a?.value || null));
 
   const [data, updateData] = useState(defaultData);

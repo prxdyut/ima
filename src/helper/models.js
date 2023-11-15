@@ -95,6 +95,31 @@ const LogSchema = new Schema({
   created: Date,
 });
 
+const FeeSchema = new Schema({
+  student: String,
+  total: Number,
+  lastUpdated: String,
+  enrolled: Date,
+  transactions: [
+    {
+      ref: String,
+      amount: Number,
+      mode: String,
+      created: Date,
+      updatedBy: String,
+    },
+  ],
+});
+
+const chatRoomSchema = new Schema({
+  roomId: Number,
+  roomName: String,
+  members: [String],
+  messages: [
+    { sender: String, content: String, images: [String], timestamp: Date },
+  ],
+});
+
 export const Batches =
   mongoose.models.batches || mongoose.model("batches", BatchSchema);
 export const Assignments =
@@ -113,4 +138,7 @@ export const Remarks =
   mongoose.models.remarks || mongoose.model("remarks", RemarkSchema);
 export const Schedules =
   mongoose.models.schedules || mongoose.model("schedules", ScheduleSchema);
+export const Fees = mongoose.models.fees || mongoose.model("fees", FeeSchema);
 export const Logs = mongoose.models.logs || mongoose.model("logs", LogSchema);
+export const Chats =
+  mongoose.models.chatrooms || mongoose.model("chatrooms", chatRoomSchema);
