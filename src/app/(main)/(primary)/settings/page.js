@@ -1,6 +1,7 @@
 "use client";
 import { Box, Button, Stack, Switch, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
+
 export default function Page(params) {
   const [stringifieddata, setData] = useState([]);
   const data = stringifieddata.map((data) => JSON.parse(data));

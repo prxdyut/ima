@@ -16,7 +16,7 @@ export default function NewButton(params) {
   const form = (
     <FormBuilder
       formFields={[
-        { type: "batch", name: "batch",},
+        { type: "batch", name: "batch", },
         { type: "short", label: "Topic", name: "topic" },
         { type: "long", label: "Topic", name: "content" },
         { type: "file", label: "Files", name: "files" },
@@ -27,7 +27,8 @@ export default function NewButton(params) {
         createModal(
           <Stack
             spacing={3}
-            sx={{mt:2,
+            sx={{
+              mt: 2,
               p: 2,
             }}
           >
