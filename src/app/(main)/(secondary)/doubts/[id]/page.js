@@ -29,6 +29,7 @@ import {
   TextField,
   Toolbar,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import ImageViewer from "@/components/images-viewer";
 import { getDoubt } from "@/helper/apis";
@@ -81,17 +82,20 @@ function ResponseBar(params) {
       .catch((error) => console.log("error", error));
   };
   
+  const isLargeScreen = useMediaQuery("(min-width:768px)");
   console.log(data);
   return (
     <React.Fragment key={params.loadId}>
       <Box sx={{ height: 56 }} />
       <Box
         sx={{
-          bottom: 0,
+          bottom: isLargeScreen ? 16 : 0,
           left: 0,
           position: "fixed",
           height: "min-content",
           width: "100%",
+          px: isLargeScreen && "30%",
+
         }}
       >
         {data.replyTo && (
@@ -136,6 +140,7 @@ function ResponseBar(params) {
           sx={{
             "& > button": { mx: 0.2 },
             bgcolor: (theme) => theme.palette.primary.light,
+            borderRadius: isLargeScreen && 2
           }}
         >
           <IconButton onClick={() => params.reload()}>

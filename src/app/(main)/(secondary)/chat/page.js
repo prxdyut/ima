@@ -1,5 +1,5 @@
 "use client";
-import { Image } from "@mui/icons-material";
+import { Groups, Image } from "@mui/icons-material";
 import {
   Avatar,
   Box,
@@ -16,6 +16,7 @@ import { getFormattedName } from "@/helper/functions";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Loading from "./loading";
 
 export default function Page(params) {
   const [users, setUsers] = useState([]);
@@ -57,7 +58,7 @@ export default function Page(params) {
       .then(() => setLoading(false));
   }, []);
 
-  if (loading) return "loading";
+  if (loading) return <Loading />;
 
   const chats = data.map(({ members, ...restData }) => ({
     ...restData,
@@ -71,6 +72,7 @@ export default function Page(params) {
 
   const eligibleChatRoomsUsers = users
     .map((_) => _?.id)
+    .filter((id) => id != user.id)
     .filter((item) => !activeChatroomUsers.includes(item))
     .map((_) => users.find(({ id }) => id == _));
 
@@ -84,18 +86,18 @@ export default function Page(params) {
             (_) => _?.id != user?.id
           );
           const isPersonalChat = personalChatSenders.length == 1;
-          const chatSendersNames = personalChatSenders.map((user) =>
-            user ? getFormattedName(user) : null
-          );
-          const chatSendersUserNames = personalChatSenders.map(
-            (user) => "@" + user?.username
-          );
+          const chatSendersNames = personalChatSenders
+            .map((user) => (user ? getFormattedName(user) : null))
+            .join(", ");
+          const chatSendersUserNames = personalChatSenders
+            .map((user) => "@" + user?.username)
+            .join(" ");
 
           if (isPersonalChat)
             return (
               <ListItemButton LinkComponent={Link} href={"chat/" + chat.roomId}>
                 <ListItemAvatar>
-                  <Avatar></Avatar>
+                  <Avatar src={personalChatSenders[0].imageUrl} />
                 </ListItemAvatar>
                 <ListItemText
                   primary={
@@ -103,14 +105,35 @@ export default function Page(params) {
                       sx={{ display: "flex", justifyContent: "space-between" }}
                     >
                       <Typography>{chatSendersNames}</Typography>
-                      <Typography variant="caption">
-                        <i> {chatSendersUserNames}</i>
-                      </Typography>
                     </Box>
                   }
                   secondary={
                     <Typography variant="body2">
-                      <b>Me : </b>hi
+                      <i> {chatSendersUserNames}</i>
+                    </Typography>
+                  }
+                />
+              </ListItemButton>
+            );
+          if (isGroupChat)
+            return (
+              <ListItemButton LinkComponent={Link} href={"chat/" + chat.roomId}>
+                <ListItemAvatar>
+                  <Avatar>
+                    <Groups />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={
+                    <Box
+                      sx={{ display: "flex", justifyContent: "space-between" }}
+                    >
+                      <Typography>{chat.roomName}</Typography>
+                    </Box>
+                  }
+                  secondary={
+                    <Typography variant="body2">
+                      {chatSendersNames}
                     </Typography>
                   }
                 />

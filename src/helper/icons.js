@@ -18,9 +18,11 @@ import {
   Groups,
   Payment,
   Settings,
+  ChatBubble,
+  Message,
 } from "@mui/icons-material";
 
-import { TbAtom, TbMathSymbols, TbVaccineBottle } from "react-icons/tb";
+import { TbAtom, TbChartBubble, TbMathSymbols, TbVaccineBottle } from "react-icons/tb";
 
 
 export function AssignmentIcon(params) {
@@ -48,7 +50,7 @@ export function AcademicsIcon(params) {
 }
 
 export function AttendanceIcon(params) {
-  return <Groups {...params} />;
+  return <Group {...params} />;
 }
 
 export function FeesIcon(params) {
@@ -57,6 +59,10 @@ export function FeesIcon(params) {
 
 export function SettingsIcon(params) {
   return <Settings {...params} />;
+}
+
+export function ChatroomIcon(params) {
+  return <Message {...params} />;
 }
 
 

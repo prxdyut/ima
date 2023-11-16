@@ -30,7 +30,7 @@ export function getFormattedDate(date) {
 }
 
 export function getFormattedName(user) {
-  return (user.firstName || "") + " " + (user.lastName || "");
+  return (user?.firstName || "") + " " + (user?.lastName || "");
 }
 
 export function getFormattedDateShort(date) {

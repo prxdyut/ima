@@ -6,18 +6,24 @@
     <title>Notification Button</title>
     <style>
       body {
-        margin: 0;
-        padding: 0;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100vw;
-      }
+    margin: 0;
+}
+
+svg#webpushr_btn_bell_icon {
+    margin-right: 8px;
+}
+
+div#webpushr-subscription-button {
+    width: 100%;
+    border-radius: 0;
+    justify-content: center;
+    padding-block: 12px;
+}
     </style>
     <script src="./script.js"></script>
   </head>
   <body>
-    <span id="webpushr-subscription-toggle-button" data-size="1.2" data-text-when-denied="You've blocked push notifications." data-tooltip-position="top" data-color="#00796b"></span>
+    <!-- <span id="webpushr-subscription-toggle-button" data-size="1.2" data-text-when-denied="You've blocked push notifications." data-tooltip-position="top" data-color="#00796b"></span> -->
+    <div id="webpushr-subscription-button" data-show-subscriber-count="false"></div>
   </body>
 </html>

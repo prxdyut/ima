@@ -14,7 +14,17 @@ export default function Layout({ children }) {
         <Container sx={{ my: 2 }}>
           <Grid container spacing={4}>
             <Grid item xs={3}>
-              <Box>
+              <Box
+                sx={{
+                  position: "fixed",
+                  top: "0",
+                  overflow: "scroll",
+                  height: "100vh",
+                  scrollbarWidth: "none",
+                  overflowX: "hidden",
+                  "&::-webkit-scrollbar": {display: 'none'},
+                }}
+              >
                 <Drawer />
               </Box>
             </Grid>

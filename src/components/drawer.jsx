@@ -13,20 +13,21 @@ import {
   Assignment,
   CalendarToday, Help, InstallMobile, LibraryMusic,
   Logout, MoreVert,
-  ReceiptLong
+  ReceiptLong,
+  Settings
 } from "@mui/icons-material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SignOutButton, UserButton, useUser } from "@clerk/nextjs";
 import dynamic from "next/dynamic";
 import "react-toastify/dist/ReactToastify.css";
 
-import {getFormattedName} from './../helper/functions'
+import { getFormattedName } from './../helper/functions'
 const ReactViewer = dynamic(() => import("react-viewer"), { ssr: false });
 
 import "suneditor/dist/css/suneditor.min.css";
 import Link from "next/link";
 import { usePWAInstall } from "react-use-pwa-install";
-import { AttendanceIcon, FeesIcon, SettingsIcon } from "../helper/icons";
+import { AttendanceIcon, ChatroomIcon, FeesIcon, SettingsIcon } from "../helper/icons";
 
 const Drawer = () => {
   const menuItems = [
@@ -46,6 +47,7 @@ const Drawer = () => {
     { label: "Attendance", url: "/attendance", icon: <AttendanceIcon /> },
     { label: "Fees", url: "/fees", icon: <FeesIcon /> },
     { label: "Settings", url: "/settings", icon: <SettingsIcon /> },
+    { label: "Chatroom", url: "/chat", icon: <ChatroomIcon /> },
   ];
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -57,9 +59,30 @@ const Drawer = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-const {user, isLoaded} = useUser()
+  const { user, isLoaded } = useUser()
   const install = usePWAInstall();
+  const [NotificationPermission, setNotificationPermission] = useState('Asking')
+  useEffect(() => {
+    const checkPermission = () => {
+      setNotificationPermission(Notification.permission)
 
+      if (Notification.permission !== 'granted') {
+        requestNotificationPermission();
+      }
+    };
+
+    const requestNotificationPermission = async () => {
+      try {
+        const permission = await Notification.requestPermission();
+        setNotificationPermission(permission)
+      } catch (error) {
+        alert('Error requesting permission:', JSON.stringify(error));
+      }
+    };
+
+    const interval = setInterval(checkPermission, 10000);
+    return () => clearInterval(interval);
+ }, []);
   return (
     <>
       <Menu
@@ -73,14 +96,15 @@ const {user, isLoaded} = useUser()
         <MenuItem onClick={handleClose}>Help</MenuItem>
         <MenuItem onClick={handleClose}>Report a Problem</MenuItem>
       </Menu>
-      <Box sx={{ mt: 1, width: "100%", maxWidth: "75vw" }}>
+      <Box sx={{ mt: 1, width: "100%", maxWidth: "75vw", maxHeight: '100vh', py:2  }}>
         <Box
           sx={{
             p: 0,
             bgcolor: "primary.light",
             zIndex: "2",
             borderRadius: 2,
-            mx: 1,
+            mx: 1, position: 'sticky',
+            top: '8px'
           }}
         >
           <Card
@@ -115,6 +139,7 @@ const {user, isLoaded} = useUser()
             />
           </Card>
         </Box>
+        Status: {NotificationPermission}
         <List sx={{ mt: 0 }}>
           {menuItems.map((menu, index) => (
             <React.Fragment key={index}>
@@ -123,7 +148,7 @@ const {user, isLoaded} = useUser()
                   disablePadding
                   secondaryAction={<Typography>{menu?.helper}</Typography>}
                 >
-                  <ListItemButton LinkComponent={Link} href={ menu.url}>
+                  <ListItemButton LinkComponent={Link} href={menu.url}>
                     <ListItemIcon>{menu.icon}</ListItemIcon>
                     <ListItemText primary={menu.label} />
                   </ListItemButton>
@@ -141,7 +166,8 @@ const {user, isLoaded} = useUser()
           ))}
         </List>
 
-        <List sx={{ p: 0 }}>
+        <List sx={{ p: 0, position: 'sticky',
+bottom: '0', pb:2, bgcolor: theme => theme.palette.background.default }} >
           {install && (
             <ListItem disablePadding >
               <ListItemButton
