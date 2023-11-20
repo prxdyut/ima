@@ -1,36 +1,26 @@
 "use client";
-import { Image } from "@mui/icons-material";
-import { CancelIcon, RefreshIcon, SendIcon, UploadIcon } from "@/helper/icons";
+import { SendIcon } from "@/helper/icons";
 import {
-  AppBar,
   IconButton,
   Avatar,
-  Box,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemButton,
-  ListItemText,
-  Stack,
+  Box, Stack,
   Toolbar,
   Typography,
   InputBase,
   Paper,
   LinearProgress,
   useMediaQuery,
-  AvatarGroup,
+  AvatarGroup
 } from "@mui/material";
+import FilesViewer from "@/components/files-viewer";
 import React, { useEffect, useState } from "react";
 import { getUser, getChat } from "@/helper/apis";
 import { getFormattedName } from "@/helper/functions";
-import ImageViewer from "../../../../../components/images-viewer";
 import { useRouter } from "next/navigation";
-import UploadComponent from "@/components/image-uploader";
+import UploadComponent from "@/components/file-uploader";
 import { useUser } from "@clerk/nextjs";
-import { io } from "socket.io-client";
 import Loading from "./loading";
-import moment from "moment";
-// const socket = io("http://localhost:3001");
+ import moment from "moment";
 
 function ResponseBar(params) {
   const [uploadedImages, setuploadedImages] = useState(<></>);
@@ -174,7 +164,7 @@ function Message({ children, type, time, images = [], imgSrc, sender }) {
           >
             {children}
             <Box sx={{ mt: 1 }} />
-            <ImageViewer contents={images} cols={4} />
+            <FilesViewer contents={images} cols={4} />
           </Box>
           <Typography fontSize={12} color={"text.secondary"} sx={{ pt: 0.2 }}>
             {time && <>&#128337;&nbsp;{time}</>}
@@ -199,7 +189,7 @@ function Message({ children, type, time, images = [], imgSrc, sender }) {
           >
             {children}
             <Box sx={{ mt: 1 }} />
-            <ImageViewer contents={images} cols={4} />
+            <FilesViewer contents={images} cols={4} />
           </Box>
 
           <Typography

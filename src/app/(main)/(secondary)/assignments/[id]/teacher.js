@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { getAssignment, getAllSubmissions, getUser } from "@/helper/apis";
 import { getFormattedDate } from "@/helper/functions";
 import { Box, Divider, NoSsr, Stack, Typography } from "@mui/material";
-import ImageViewer from "@/components/images-viewer";
+import FilesViewer from "@/components/files-viewer";
 import Loading from "./loading";
 import UIAccordian from "@/components/accordians";
 
@@ -36,7 +36,7 @@ export default function Page({ params: { id } }) {
           <NoSsr>
             <div dangerouslySetInnerHTML={{ __html: content }} />
           </NoSsr>
-          <ImageViewer contents={files} />
+          <FilesViewer contents={files} />
           <Box textAlign={"end"}>
             <Typography variant="caption">
               {new Date(created).toLocaleString()}
@@ -63,7 +63,7 @@ export default function Page({ params: { id } }) {
             dangerouslySetInnerHTML={{ __html: data?.content }}
           />
         </NoSsr>
-        <ImageViewer contents={data?.files} />
+        <FilesViewer contents={data?.files} />
         <Box />
         <Divider textAlign="right">Submissions</Divider>
         <UIAccordian contents={contents} />

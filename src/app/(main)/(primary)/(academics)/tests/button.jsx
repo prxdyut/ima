@@ -6,7 +6,7 @@ import FormBuilder from "@/components/form-builder";
 import { getFormattedDate, subjects } from "@/helper/functions";
 import { usePathname, useRouter } from "next/navigation";
 import { Verified } from "@mui/icons-material";
-import ImageViewer from "@/components/images-viewer";
+import FilesViewer from "@/components/files-viewer";
 import Link from "next/link";
 
 export default function NewButton(params) {
@@ -48,11 +48,11 @@ export default function NewButton(params) {
               </Typography>
               <Typography>
                 <b>Question Set :</b> <br/>
-              <ImageViewer contents={result?.questions} />
+              <FilesViewer contents={result?.questions} />
               </Typography>
               <Typography>
                 <b>Answer Set :</b> <br/>
-              <ImageViewer contents={result?.answers} />
+              <FilesViewer contents={result?.answers} />
               </Typography>
             </Stack>
             <Stack direction={"row"} spacing={2} justifyContent={"flex-end"}>

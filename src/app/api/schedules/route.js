@@ -2,6 +2,7 @@ import { connectDB } from "@/helper/db";
 import { Schedules } from "@/helper/models";
 import { auth, clerkClient } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+import sendMail from "@/helper/sendMail";
 
 connectDB();
 export async function GET(request) {
@@ -29,12 +30,21 @@ export async function GET(request) {
 
 export async function PUT(request) {
   let { date, batch, ...reqData } = await request.json();
+  const scheduleData = { date, batch, lectures: reqData };
 
   try {
     await Schedules.findOneAndUpdate(
       { date, batch },
       { $push: { lectures: reqData } },
       { upsert: true }
+    );
+
+    await sendMail(
+      {
+        subject: `New Schedule`,
+        text: JSON.stringify(scheduleData),
+      },
+      batch, 'schedule'
     );
 
     return NextResponse.json({ date, batch, ...reqData });

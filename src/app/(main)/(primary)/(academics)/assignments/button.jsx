@@ -6,7 +6,7 @@ import FormBuilder from "@/components/form-builder";
 import { getFormattedDate, subjects } from "@/helper/functions";
 import { usePathname, useRouter } from "next/navigation";
 import { Verified } from "@mui/icons-material";
-import ImageViewer from "@/components/images-viewer";
+import FilesViewer from "@/components/files-viewer";
 import Link from "next/link";
 
 export default function NewButton(params) {
@@ -54,7 +54,7 @@ export default function NewButton(params) {
                   <div dangerouslySetInnerHTML={{ __html: result?.content }} />
                 </NoSsr>
               </Typography>
-              <ImageViewer contents={result?.files} />
+              <FilesViewer contents={result?.files} />
             </Stack>
             <Stack direction={"row"} spacing={2} justifyContent={"flex-end"}>
               <Button variant="outlined" onClick={() => router.back()}>

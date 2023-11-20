@@ -21,7 +21,7 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "suneditor/dist/css/suneditor.min.css";
-import ImageUploader from "@/components/image-uploader";
+import ImageUploader from "@/components/file-uploader";
 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";

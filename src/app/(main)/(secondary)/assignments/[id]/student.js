@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { getAssignment, getSubmission, getUser } from "@/helper/apis";
 import { getFormattedDate } from "@/helper/functions";
 import { Box, Button, Divider, NoSsr, Stack, Typography } from "@mui/material";
-import ImageViewer from "@/components/images-viewer";
+import FilesViewer from "@/components/files-viewer";
 import Loading from "./loading";
 import { ModalContext } from "@/helper/modal-context";
 import FormBuilder from "@/components/form-builder";
@@ -75,7 +75,7 @@ export default function Page({ params: { id } }) {
             dangerouslySetInnerHTML={{ __html: data?.assignment?.content }}
           />
         </NoSsr>
-        <ImageViewer contents={data?.assignment?.files} />
+        <FilesViewer contents={data?.assignment?.files} />
         {data?.submission ? (
           <React.Fragment>
             <Box />
@@ -88,7 +88,7 @@ export default function Page({ params: { id } }) {
                 dangerouslySetInnerHTML={{ __html: data?.submission?.content }}
               />
             </NoSsr>
-            <ImageViewer contents={data?.submission?.files} />
+            <FilesViewer contents={data?.submission?.files} />
           </React.Fragment>
         ) : (
           <Box sx={{ textAlign: "end" }}>

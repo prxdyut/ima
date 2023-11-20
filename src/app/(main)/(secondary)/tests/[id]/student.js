@@ -15,7 +15,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import ImageViewer from "@/components/images-viewer";
+import FilesViewer from "@/components/files-viewer";
 import { getTest, getUsersByBatch } from "@/helper/apis";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -62,9 +62,9 @@ export default function Page({ params: { id } }) {
         </Stack>
         <Divider textAlign="right">Test</Divider>
         <Typography variant="caption">Questions</Typography>
-        <ImageViewer contents={data?.questions || []} />
+        <FilesViewer contents={data?.questions || []} />
         <Typography variant="caption">Answers</Typography>
-        <ImageViewer contents={data?.answers || []} />
+        <FilesViewer contents={data?.answers || []} />
       </Stack>
     </React.Fragment>
   );

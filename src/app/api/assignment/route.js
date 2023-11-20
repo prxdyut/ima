@@ -4,6 +4,8 @@ import { clerkClient, getAuth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { auth } from "@clerk/nextjs";
+import sendMail from "@/helper/sendMail";
+import { getFormattedName, getSubjectName } from "@/helper/functions";
 
 connectDB();
 export async function GET(request) {
@@ -37,10 +39,24 @@ export async function GET(request) {
 export async function POST(request) {
   let reqData = await request.json();
   const { userId } = auth();
+  const user = await clerkClient.users.getUser(userId);
+  const assignmentData = {
+    ...reqData,
+    teacher: userId,
+    created: new Date(),
+  };
 
   try {
-    const data = new Assignments({...reqData, teacher: userId, created: new Date()});
+    const data = new Assignments(assignmentData);
     const createdData = await data.save();
+
+    await sendMail(
+      {
+        subject: `New Assignment`,
+        text: JSON.stringify(assignmentData),
+      },
+      reqData.batch, 'assignments'
+    );
 
     console.log(createdData);
     return NextResponse.json(createdData);

@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { MathsIcon, PhysicsIcon, ChemistryIcon } from "./icons";
 import { ModalContext } from "./modal-context";
-import moment from "moment";
+import moment from 'moment'
 
 export function getSubjectIcon(sub, params = { height: 24, width: 24 }) {
   return (

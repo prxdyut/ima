@@ -62,6 +62,10 @@ export async function getFees() {
   return await fetchUrl("/api/fees");
 }
 
+export async function getSettings() {
+  return await fetchUrl("/api/settings");
+}
+
 export async function getChats() {
   return await fetchUrl("/api/chats");
 }

@@ -3,6 +3,7 @@ import { Doubts } from "@/helper/models";
 import { auth, clerkClient } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
+import sendMail from "@/helper/sendMail";
 connectDB();
 export async function GET(request) {
   const id = request.nextUrl.searchParams.get("id");
@@ -33,10 +34,19 @@ export async function GET(request) {
 export async function POST(request) {
   let reqData = await request.json();
   const { userId } = auth();
+  const doubtsData = {...reqData, user: userId, created: new Date()}
 
   try {
-    const data = new Doubts({...reqData, user: userId, created: new Date()});
+    const data = new Doubts(doubtsData);
     const createdData = await data.save();
+
+    await sendMail(
+      {
+        subject: `New Doubt`,
+        text: JSON.stringify(doubtsData),
+      },
+      reqData.batch,'doubts'
+    );
 
     console.log(createdData);
     return NextResponse.json(createdData);

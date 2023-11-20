@@ -7,7 +7,7 @@ import {
   getSubjectName,
 } from "@/helper/functions";
 import { Box, Divider, Grid, Skeleton, Stack, Typography } from "@mui/material";
-import ImageViewer from "@/components/images-viewer";
+import FilesViewer from "@/components/files-viewer";
 
 export default function Loading({}) {
   return (

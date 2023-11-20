@@ -21,7 +21,7 @@ const initializeWebPushr = () => {
   });
 };
 export default function RootTemplate({ children }) {
-  useEffect(() => { initializeWebPushr() }, [])
+  // useEffect(() => { initializeWebPushr() }, [])
   return (
     <React.Fragment>
       <ThemeRegistry value={"value"}>

@@ -38,8 +38,8 @@ const Drawer = () => {
       url: "/assignments",
       icon: <Assignment />,
     },
-    { label: "Tests", url: "/tests", icon: <ReceiptLong /> },
     { label: "Doubts", url: "/doubts", icon: <Help /> },
+    { label: "Tests", url: "/tests", icon: <ReceiptLong /> },
     "divider",
     { label: "Schedule", url: "/schedule", icon: <CalendarToday /> },
     { label: "Library", url: "/library", icon: <LibraryMusic /> },
@@ -63,14 +63,6 @@ const Drawer = () => {
   const install = usePWAInstall();
   const [NotificationPermission, setNotificationPermission] = useState('Asking')
   useEffect(() => {
-    const checkPermission = () => {
-      setNotificationPermission(Notification.permission)
-
-      if (Notification.permission !== 'granted') {
-        requestNotificationPermission();
-      }
-    };
-
     const requestNotificationPermission = async () => {
       try {
         const permission = await Notification.requestPermission();
@@ -79,10 +71,11 @@ const Drawer = () => {
         alert('Error requesting permission:', JSON.stringify(error));
       }
     };
+    if (Notification.permission !== 'granted') {
+      requestNotificationPermission();
+    }
 
-    const interval = setInterval(checkPermission, 10000);
-    return () => clearInterval(interval);
- }, []);
+  }, []);
   return (
     <>
       <Menu
@@ -96,7 +89,7 @@ const Drawer = () => {
         <MenuItem onClick={handleClose}>Help</MenuItem>
         <MenuItem onClick={handleClose}>Report a Problem</MenuItem>
       </Menu>
-      <Box sx={{ mt: 1, width: "100%", maxWidth: "75vw", maxHeight: '100vh', py:2  }}>
+      <Box sx={{ mt: 1, width: "100%", maxWidth: "75vw", maxHeight: '100vh', py: 2 }}>
         <Box
           sx={{
             p: 0,
@@ -139,7 +132,6 @@ const Drawer = () => {
             />
           </Card>
         </Box>
-        Status: {NotificationPermission}
         <List sx={{ mt: 0 }}>
           {menuItems.map((menu, index) => (
             <React.Fragment key={index}>
@@ -166,8 +158,10 @@ const Drawer = () => {
           ))}
         </List>
 
-        <List sx={{ p: 0, position: 'sticky',
-bottom: '0', pb:2, bgcolor: theme => theme.palette.background.default }} >
+        <List sx={{
+          p: 0, position: 'sticky',
+          bottom: '0', pb: 2, bgcolor: theme => theme.palette.background.default
+        }} >
           {install && (
             <ListItem disablePadding >
               <ListItemButton

@@ -2,6 +2,7 @@ import { connectDB } from "@/helper/db";
 import { Files } from "@/helper/models";
 import { auth, clerkClient } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+import sendMail from "@/helper/sendMail";
 
 connectDB();
 export async function GET(request) {
@@ -33,10 +34,19 @@ export async function GET(request) {
 
 export async function POST(request) {
   let reqData = await request.json();
+const fileData = {...reqData}
 
   try {
-    const data = new Files(reqData);
+    const data = new Files(fileData);
     const createdData = await data.save();
+
+    await sendMail(
+      {
+        subject: `New File`,
+        text: JSON.stringify(fileData),
+      },
+      reqData.batch, 'library'
+    );
 
     console.log(createdData);
     return NextResponse.json(createdData);

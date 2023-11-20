@@ -1,5 +1,2 @@
-**build Notification system
-*compress image in uploaded
-
 manage api access from middleware itself
 authenticate api to show batch based data

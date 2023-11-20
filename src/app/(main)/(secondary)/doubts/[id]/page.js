@@ -31,13 +31,13 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import ImageViewer from "@/components/images-viewer";
+import FilesViewer from "@/components/files-viewer";
 import { getDoubt } from "@/helper/apis";
 import Loading from "./loading";
 import { useState } from "react";
 import { useEffect } from "react";
 import { CancelIcon, RefreshIcon, SendIcon, UploadIcon } from "@/helper/icons";
-import UploadComponent from "@/components/image-uploader";
+import UploadComponent from "@/components/file-uploader";
 import { useRouter } from "next/navigation";
 import UIAccordian from "@/components/accordians";
 import { More, Reply } from "@mui/icons-material";
@@ -226,7 +226,7 @@ export default function Page({ params: { id } }) {
         <CardContent sx={{ pt: 0, pl: 6, pb: 0 }}>
           {content}
           <Box sx={{ height: 4 }} />
-          <ImageViewer contents={files} cols={6} />
+          <FilesViewer contents={files} cols={6} />
         </CardContent>
         {
           <CardActions sx={{ pl: 6, pb: 0 }}>
@@ -301,7 +301,7 @@ export default function Page({ params: { id } }) {
         <NoSsr>
           <div dangerouslySetInnerHTML={{ __html: data?.content }} />
         </NoSsr>
-        <ImageViewer contents={data?.files || []} />
+        <FilesViewer contents={data?.files || []} />
         <Box />
         <Divider textAlign="right">Responses</Divider>
         <Box>
